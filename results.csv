@@ -1,0 +1,7 @@
+model,prompt,temperature,response_time,answer_length,answer
+openai/gpt-4.1-mini,Explain supervised vs unsupervised learning.,0.7,0.01,72,Simulated response for 'Explain supervised vs unsupervised learning....'
+openai/gpt-4.1-mini,Write a Python function to reverse a string.,0.7,0.01,72,Simulated response for 'Write a Python function to reverse a string....'
+openai/gpt-4.1-mini,Summarize World War 1 in 5 sentences.,0.7,0.01,65,Simulated response for 'Summarize World War 1 in 5 sentences....'
+anthropic/claude-haiku-3,Explain supervised vs unsupervised learning.,0.7,0.01,72,Simulated response for 'Explain supervised vs unsupervised learning....'
+anthropic/claude-haiku-3,Write a Python function to reverse a string.,0.7,0.01,72,Simulated response for 'Write a Python function to reverse a string....'
+anthropic/claude-haiku-3,Summarize World War 1 in 5 sentences.,0.7,0.01,65,Simulated response for 'Summarize World War 1 in 5 sentences....'
