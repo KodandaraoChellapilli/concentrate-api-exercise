@@ -44,14 +44,9 @@ def get_response(model, prompt, temperature=0.7):
     }
 
 # Models and questions
-# models = [
-#     "openai/gpt-4.1-mini",
-#     "anthropic/claude-haiku-3"
-# ]
-
 models = [
-    "llama-3.2-1b-instruct",
-    "gpt-oss-120b"
+    "openai/gpt-4.1-mini",
+    "anthropic/claude-haiku-3"
 ]
 
 questions = [

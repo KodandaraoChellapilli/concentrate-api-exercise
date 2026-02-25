@@ -4,21 +4,22 @@ import pandas as pd
 from dotenv import load_dotenv
 import os
 
+
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
 API_URL = os.getenv("API_URL")
 
-def get_response(model, prompt, temperature=0.7):
+def get_response(model, prompt, temperature=0.7, max_tokens=300):
     headers = {
         "Authorization": f"Bearer {API_KEY}",
         "Content-Type": "application/json"
     }
 
-    # Fixed payload format for API
     payload = {
         "model": model,
-        "input": [{"role": "user", "content": prompt}],
-        "temperature": temperature
+        "input": prompt,
+        "temperature": temperature,
+        "max_output_tokens": max_tokens  
     }
 
     start_time = time.time()
@@ -43,15 +44,10 @@ def get_response(model, prompt, temperature=0.7):
         "answer": answer
     }
 
-# Models and questions
-# models = [
-#     "openai/gpt-4.1-mini",
-#     "anthropic/claude-haiku-3"
-# ]
 
 models = [
-    "llama-3.2-1b-instruct",
-    "gpt-oss-120b"
+    "openai/gpt-4.1-mini",
+    "anthropic/claude-haiku-3"
 ]
 
 questions = [
@@ -64,7 +60,7 @@ temperatures = [0.7]
 
 results = []
 
-# Loop through models, questions, temperatures
+
 for model in models:
     for question in questions:
         for temp in temperatures:
@@ -74,7 +70,6 @@ for model in models:
             print("Answer:", result["answer"][:100], "...\n")
             results.append(result)
 
-# Save results
 df = pd.DataFrame(results)
 df.to_csv("results.csv", index=False)
 
