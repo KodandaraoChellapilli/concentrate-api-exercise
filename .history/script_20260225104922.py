@@ -4,36 +4,49 @@ import pandas as pd
 from dotenv import load_dotenv
 import os
 
-
+# Load environment variables
 load_dotenv()
 API_KEY = os.getenv("API_KEY")
 API_URL = os.getenv("API_URL")
 
-def get_response(model, prompt, temperature=0.7, max_tokens=300):
+if not API_KEY or not API_URL:
+    raise ValueError("API_KEY or API_URL not found. Check your .env file.")
+
+def get_response(model, prompt, temperature=0.7):
     headers = {
         "Authorization": f"Bearer {API_KEY}",
         "Content-Type": "application/json"
     }
 
+    # ✅ Correct format for /v1/responses
     payload = {
         "model": model,
         "input": prompt,
-        "temperature": temperature,
-        "max_output_tokens": max_tokens  
+        "temperature": temperature
     }
+
+    print(f"Hitting API for model={model} prompt='{prompt[:30]}...'")
 
     start_time = time.time()
     response = requests.post(API_URL, headers=headers, json=payload)
     response_time = round(time.time() - start_time, 2)
 
+    print("Status Code:", response.status_code)
+
     if response.status_code == 200:
+        data = response.json()
+
+        # Most Responses APIs return output as:
+        # data["output"][0]["content"][0]["text"]
         try:
-            data = response.json()
             answer = data["output"][0]["content"][0]["text"]
-        except:
+        except Exception:
             answer = str(data)
+
     else:
-        answer = f"Error {response.status_code}"
+        print("Error:", response.text)
+        answer = f"ERROR: {response.status_code}"
+        response_time = 0.01
 
     return {
         "model": model,
@@ -57,14 +70,11 @@ questions = [
 ]
 
 temperatures = [0.7]
-
 results = []
-
 
 for model in models:
     for question in questions:
         for temp in temperatures:
-            print(f"\nTesting {model} | Temp={temp}")
             result = get_response(model, question, temp)
             print("Response time:", result["response_time"], "seconds")
             print("Answer:", result["answer"][:100], "...\n")
@@ -73,4 +83,4 @@ for model in models:
 df = pd.DataFrame(results)
 df.to_csv("results.csv", index=False)
 
-print("\nThe results saved in csv file")
+print("\nResults saved to results.csv")
